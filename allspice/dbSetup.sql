@@ -41,10 +41,15 @@ CREATE TABLE IF NOT EXISTS ingredients(
 CREATE TABLE IF NOT EXISTS steps(
   id INT AUTO_INCREMENT PRIMARY KEY,
   position INT NOT NULL,
-  body VARCHAR(500) NOT NULL,
+  body VARCHAR(1000) NOT NULL,
   recipeId INT NOT NULL,
   FOREIGN KEY (recipeId) REFERENCES recipes(id)
 ) default charset utf8 COMMENT '';
+
+INSERT INTO steps
+(position, body, recipeId)
+VALUES
+(1, "Toss pumpkins, onions, and garlic with a bit of olive oil. Roast until everything is soft and has nice browned edges. Place the roasted items in a soup pot and turn to medium heat. Add 3/4 of the stock and simmer for up to 45 minutes, or until fully cooked. Put in a food processor and blend until smooth. Blend in small amounts of the goat cheese along with the cream if desired. Adjust thickness with the leftover stock. Add more cream if desired and finish seasoning with basil, salt, and pepper. If you add a filet of fish, pan-fry it separately with oil, salt and pepper, then add it to the soup.", 3);
 
 CREATE TABLE IF NOT EXISTS favorites(
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,7 +64,7 @@ INSERT INTO recipes
   VALUES
   ("https://1.bp.blogspot.com/--b0Zif9i3aM/Uo1fMaOy4II/AAAAAAAAAhU/ar0ln_76mHU/s1600/yetosuperbsoup.jpg", "Yeto's Superb Pumpkin and Goat Cheese Soup", "From The Legend of Zelda: Twilight Princess game", "So I think I've done some of the more well-known fantasy foods, all of which have been sweet, so now it's time to change it up a bit and do a more obscure and savory dish. This one appeared in the newest Zelda game, Twilight Princess, in the Snowpeak temple as a soup that Yeto makes for his sick wife, Yeta. The soup, thanks to it's reekfish base, has healing properties that increase as Link finds more ingredients to add throughout the temple, namely a pumpkin and goat cheese from Link's hometown, Ordon. I took a basic pumpkin soup and made some modifications. I decided to make the fish stock and the filet optional because while I think pumpkin and goat cheese are a match made in heaven (or Hyrule), fish and pumpkin and goat cheese might seem like a strange mix for some. Fish or no fish, this soup makes for a perfect winter dinner!", "62fead19fda8e818d13a81db");
 
-  
+
 -- create Tables
 -- create a link or tie between two tables that need to be used together with a foreign KEY
 -- create model
