@@ -34,7 +34,7 @@ namespace allspice.Services
       return _ingredientsRepo.CreateIngredient(newIngredient);
     }
 
-    internal object EditIngredient(Ingredient updatedIngredient)
+    internal Ingredient EditIngredient(Ingredient updatedIngredient)
     {
       Ingredient original = GetIngredientById(updatedIngredient.Id);
       original.Name = updatedIngredient.Name ?? original.Name;

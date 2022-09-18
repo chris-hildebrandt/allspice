@@ -98,7 +98,7 @@ VALUES
 INSERT INTO tags
 (name)
 VALUES
-("cream base");
+("Sandwich");
 
 SELECT 
 rt.*,
