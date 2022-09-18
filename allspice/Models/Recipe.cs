@@ -9,5 +9,6 @@ namespace allspice.Models
         public string Description { get; set; }
         public string CreatorId { get; set; }
         public Account Creator { get; set; }
+        public int FavoriteId { get; set; }
     }
 }

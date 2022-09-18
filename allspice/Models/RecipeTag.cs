@@ -5,5 +5,7 @@ namespace allspice.Models
     public int Id { get; set; }
     public int TagId { get; set; }
     public int RecipeId { get; set; }
+    public string CreatorId { get; set; }
+
   }
 }

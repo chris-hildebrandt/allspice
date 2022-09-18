@@ -26,16 +26,24 @@ CREATE TABLE IF NOT EXISTS recipeTags(
   id INT AUTO_INCREMENT PRIMARY KEY,
   tagId INT NOT NULL,
   recipeId INT NOT NULL,
+  creatorId VARCHAR(255) NOT NULL,
+  FOREIGN KEY (creatorId) REFERENCES accounts(id),
   FOREIGN KEY (recipeId) REFERENCES recipes(id),
   FOREIGN KEY (tagId) REFERENCES tags(id)
 ) default charset utf8 COMMENT '';
+
+ALTER TABLE `steps`
+add FOREIGN KEY (creatorId) REFERENCES accounts(id);
+
 
 CREATE TABLE IF NOT EXISTS ingredients(
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   quantity VARCHAR(100) NOT NULL,
   recipeId INT NOT NULL,
-  FOREIGN KEY (recipeId) REFERENCES recipes(id)
+  FOREIGN KEY (recipeId) REFERENCES recipes(id),
+  creatorId VARCHAR(255) NOT NULL,
+  FOREIGN KEY (creatorId) REFERENCES accounts(id)
 ) default charset utf8 COMMENT '';
 
 CREATE TABLE IF NOT EXISTS steps(
@@ -43,7 +51,9 @@ CREATE TABLE IF NOT EXISTS steps(
   position INT NOT NULL,
   body VARCHAR(1000) NOT NULL,
   recipeId INT NOT NULL,
-  FOREIGN KEY (recipeId) REFERENCES recipes(id)
+  FOREIGN KEY (recipeId) REFERENCES recipes(id),
+  creatorId VARCHAR(255) NOT NULL,
+  FOREIGN KEY (creatorId) REFERENCES accounts(id)
 ) default charset utf8 COMMENT '';
 
 INSERT INTO steps
@@ -59,11 +69,53 @@ CREATE TABLE IF NOT EXISTS favorites(
   FOREIGN KEY (recipeId) REFERENCES recipes(id)
 ) default charset utf8 COMMENT '';
 
+-- NOTE filter by likes
+SELECT
+  g.*,
+  COUNT(m.id) AS popularity
+  FROM games g
+  LEFT JOIN matches m on m.gameId = g.id
+  GROUP BY g.id
+  ORDER BY popularity DESC;
+
 INSERT INTO recipes
 (picture, title, subtitle, description, creatorId)
   VALUES
   ("https://1.bp.blogspot.com/--b0Zif9i3aM/Uo1fMaOy4II/AAAAAAAAAhU/ar0ln_76mHU/s1600/yetosuperbsoup.jpg", "Yeto's Superb Pumpkin and Goat Cheese Soup", "From The Legend of Zelda: Twilight Princess game", "So I think I've done some of the more well-known fantasy foods, all of which have been sweet, so now it's time to change it up a bit and do a more obscure and savory dish. This one appeared in the newest Zelda game, Twilight Princess, in the Snowpeak temple as a soup that Yeto makes for his sick wife, Yeta. The soup, thanks to it's reekfish base, has healing properties that increase as Link finds more ingredients to add throughout the temple, namely a pumpkin and goat cheese from Link's hometown, Ordon. I took a basic pumpkin soup and made some modifications. I decided to make the fish stock and the filet optional because while I think pumpkin and goat cheese are a match made in heaven (or Hyrule), fish and pumpkin and goat cheese might seem like a strange mix for some. Fish or no fish, this soup makes for a perfect winter dinner!", "62fead19fda8e818d13a81db");
 
+-- Get recipe, ingredients, account and tags by recipe ID
+
+-- find fav. join recipe, 
+
+-- get tags for recipe by recipeTag id
+-- tags should be stored on the recipe with a rt id so they can be removed rt should have a r.id, an id, and 
+
+INSERT INTO recipeTags
+(tagId, recipeId)
+VALUES
+(27,3);
+
+INSERT INTO tags
+(name)
+VALUES
+("cream base");
+
+SELECT 
+rt.*,
+t.*
+FROM recipeTags rt
+JOIN tags t ON rt.tagId
+JOIN recipes r ON rt.recipeId
+WHERE rt.tagId = t.id;
+
+SELECT *
+FROM recipeTags
+JOIN tags;
+
+SELECT *
+FROM recipes r
+JOIN accounts a ON a.id = r.creatorId
+WHERE r.creatorId = "creatorId";
 
 -- create Tables
 -- create a link or tie between two tables that need to be used together with a foreign KEY

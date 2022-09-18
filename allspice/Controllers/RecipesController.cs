@@ -14,9 +14,16 @@ namespace allspice.Controllers
   public class RecipesController : ControllerBase
   {
     private readonly RecipesService _recipesService;
-    public RecipesController(RecipesService recipesService)
+    private readonly IngredientsService _ingredientsService;
+    private readonly StepsService _stepsService;
+    private readonly RecipeTagsService _recipeTagsService;
+
+    public RecipesController(RecipesService recipesService, IngredientsService ingredientsService, StepsService stepsService, RecipeTagsService recipeTagsService)
     {
       _recipesService = recipesService;
+      _ingredientsService = ingredientsService;
+      _stepsService = stepsService;
+      _recipeTagsService = recipeTagsService;
     }
 
     [HttpGet]
@@ -30,7 +37,23 @@ namespace allspice.Controllers
       catch (System.Exception e)
       {
 
-        return BadRequest(e);
+        return BadRequest(e.Message);
+      }
+    }
+
+    // get the recipeTags associated with a recipe
+    [HttpGet("{recipeId}/recipe-tags")]
+    public ActionResult<List<RecipeTag>> GetRecipeTags(int recipeId)
+    {
+      try
+      {
+        List<RecipeTag> recipeTags = _recipeTagsService.GetRecipeTags(recipeId);
+        return Ok(recipeTags);
+      }
+      catch (System.Exception e)
+      {
+
+        return BadRequest(e.Message);
       }
     }
 
@@ -39,7 +62,8 @@ namespace allspice.Controllers
     {
       try
       {
-        return Ok(_recipesService.GetRecipeById(id));
+        Recipe recipe = _recipesService.GetRecipeById(id);
+        return Ok(recipe);
       }
       catch (System.Exception e)
       {
@@ -48,17 +72,50 @@ namespace allspice.Controllers
       }
     }
 
-    [HttpGet("/profile/{id}")]
-    public ActionResult<Recipe> GetRecipeByProfileId(int id)
+    // get the ingredients inside of a recipe
+    [HttpGet("{recipeId}/ingredients")]
+    public ActionResult<List<Ingredient>> GetRecipeIngredients(int recipeId)
     {
       try
       {
-        return Ok(_recipesService.GetRecipeByProfileId(id));
+        List<Ingredient> ingredients = _ingredientsService.GetRecipeIngredients(recipeId);
+        return Ok(ingredients);
       }
       catch (System.Exception e)
       {
 
-        return BadRequest(e);
+        return BadRequest(e.Message);
+      }
+    }
+
+    // get the steps inside of a recipe
+    [HttpGet("{recipeId}/steps")]
+    public ActionResult<List<Step>> GetRecipeSteps(int recipeId)
+    {
+      try
+      {
+        List<Step> steps = _stepsService.GetRecipeSteps(recipeId);
+        return Ok(steps);
+      }
+      catch (System.Exception e)
+      {
+
+        return BadRequest(e.Message);
+      }
+    }
+
+    [HttpGet("/profiles/{profileId}")]
+    public ActionResult<List<Recipe>> GetRecipesByProfileId(string profileId)
+    {
+      try
+      {
+        List<Recipe> recipes = _recipesService.GetRecipesByProfileId(profileId);
+        return Ok(recipes);
+      }
+      catch (System.Exception e)
+      {
+
+        return BadRequest(e.Message);
       }
     }
 
@@ -76,11 +133,9 @@ namespace allspice.Controllers
       }
       catch (System.Exception e)
       {
-        return BadRequest(e);
+        return BadRequest(e.Message);
       }
     }
-
-    // TODO double-check this function and the error message
 
     [HttpPut("{id}")]
     [Authorize]
@@ -98,7 +153,7 @@ namespace allspice.Controllers
       }
       catch (System.Exception e)
       {
-        return BadRequest(e);
+        return BadRequest(e.Message);
       }
     }
 
@@ -109,15 +164,11 @@ namespace allspice.Controllers
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-        // if ( id != userInfo.Id)
-        // {
-        //   throw new Exception("You are not authorized to edit this recipe");
-        // }
-        return Ok(_recipesService.DeleteRecipe(id));
+        return Ok(_recipesService.DeleteRecipe(userInfo, id));
       }
       catch (System.Exception e)
       {
-        return BadRequest(e);
+        return BadRequest(e.Message);
       }
     }
   }
