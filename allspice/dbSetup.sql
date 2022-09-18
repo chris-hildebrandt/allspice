@@ -117,6 +117,10 @@ FROM recipes r
 JOIN accounts a ON a.id = r.creatorId
 WHERE r.creatorId = "creatorId";
 
+SELECT *
+FROM ingredients i
+WHERE i.recipeId = "recipeId";
+
 -- create Tables
 -- create a link or tie between two tables that need to be used together with a foreign KEY
 -- create model
