@@ -26,6 +26,11 @@ namespace allspice.Services
       List<Recipe> recipes = _recipesRepo.GetRecipesByProfileId(profileId);
       return recipes;
     }
+        internal List<Recipe> GetFavoriteRecipesByProfileId(string profileId)
+    {
+      List<Recipe> recipes = _recipesRepo.GetFavoriteRecipesByProfileId(profileId);
+      return recipes;
+    }
 
     internal Recipe CreateRecipe(Recipe newRecipe)
     {

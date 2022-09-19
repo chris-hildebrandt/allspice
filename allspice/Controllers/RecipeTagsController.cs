@@ -42,6 +42,7 @@ namespace allspice.Controllers
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
         // where do the ids come from? are they in the body already?
         RecipeTag recipeTag = _recipeTagsService.CreateRecipeTag(newRecipeTag);
+        newRecipeTag.CreatorId = userInfo.Id;
         return Ok(recipeTag);
       }
       catch (System.Exception e)

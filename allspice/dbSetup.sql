@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS recipeTags(
 ALTER TABLE `steps`
 add FOREIGN KEY (creatorId) REFERENCES accounts(id);
 
+ALTER TABLE recipes
+ADD COLUMN likes INT DEFAULT 0;
 
 CREATE TABLE IF NOT EXISTS ingredients(
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -95,22 +97,29 @@ INSERT INTO recipeTags
 VALUES
 (27,3);
 
+INSERT INTO favorites
+(recipeId, accountId)
+VALUES
+(3, "62fead19fda8e818d13a81db");
+
 INSERT INTO tags
 (name)
 VALUES
 ("Sandwich");
-
+-- 
 SELECT 
 rt.*,
 t.*
 FROM recipeTags rt
 JOIN tags t ON rt.tagId
 JOIN recipes r ON rt.recipeId
-WHERE rt.tagId = t.id;
-
-SELECT *
-FROM recipeTags
-JOIN tags;
+WHERE rt.tagId = t.id AND rt.recipeId = "3";
+-- get count of all like for a recipeId
+SELECT 
+COUNT(accountId)
+FROM recipes r
+JOIN favorites f ON f.recipeId
+WHERE f.recipeId = r.id AND r.id = "3";
 
 SELECT *
 FROM recipes r

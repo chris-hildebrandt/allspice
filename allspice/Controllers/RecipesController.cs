@@ -119,6 +119,21 @@ namespace allspice.Controllers
       }
     }
 
+      [HttpGet("/favorites/{profileId}")]
+    public ActionResult<List<Recipe>> GetFavoriteRecipesByProfileId(string profileId)
+    {
+      try
+      {
+        List<Recipe> recipes = _recipesService.GetFavoriteRecipesByProfileId(profileId);
+        return Ok(recipes);
+      }
+      catch (System.Exception e)
+      {
+
+        return BadRequest(e.Message);
+      }
+    }
+
     [HttpPost]
     [Authorize]
     public async Task<ActionResult<Recipe>> CreateRecipe([FromBody] Recipe newRecipe)
