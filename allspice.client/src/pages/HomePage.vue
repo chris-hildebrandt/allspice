@@ -10,7 +10,7 @@
   <img src="https://www.tastingtable.com/img/gallery/40-types-of-soup-and-what-makes-them-unique/intro-1661261800.webp" alt="Soups-up Logo" class="">
   <img src="https://www.tastingtable.com/img/gallery/40-types-of-soup-and-what-makes-them-unique/pho-1661261800.webp" alt="Soups-up Logo" class="">
   <img src="https://thekitchencommunity.org/wp-content/uploads/2021/11/shutterstock_1074279785.jpg" alt="Soups-up Logo" class="">
-  <img src="https://www.dailybreeze.com/wp-content/uploads/2020/02/LDN-L-DINE-SOUP-0214-1-1.jpg?w=863" alt="Soups-up Logo" class="">
+  
   <img src="" alt="Soups-up Logo" class="">
 </template>
 

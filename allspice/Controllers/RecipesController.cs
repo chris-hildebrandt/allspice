@@ -159,6 +159,7 @@ namespace allspice.Controllers
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        // this id is in the request so we can attach it now instead of doing it in the repo
         updatedRecipe.Id = id;
         if (updatedRecipe.CreatorId != userInfo.Id)
         {

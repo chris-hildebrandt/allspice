@@ -19,14 +19,14 @@ namespace allspice.Repositories
     internal List<RecipeTag> GetRecipeTags(int recipeId)
     {
       string sql = @"SELECT 
-rt.*,
-t.*
-FROM recipeTags rt
-JOIN tags t ON rt.tagId
-JOIN recipes r ON rt.recipeId
-WHERE rt.tagId = t.id AND rt.recipeId = @recipeId;";
-List<RecipeTag> recipeTags = _db.Query<RecipeTag>(sql, new{recipeId}).ToList();
-return recipeTags;
+      rt.*,
+      t.*
+      FROM recipeTags rt
+      JOIN tags t ON rt.tagId
+      JOIN recipes r ON rt.recipeId
+      WHERE rt.tagId = t.id AND rt.recipeId = @recipeId;";
+      List<RecipeTag> recipeTags = _db.Query<RecipeTag>(sql, new{recipeId}).ToList();
+      return recipeTags;
     }
 
     internal RecipeTag GetRecipeTagById(int id)

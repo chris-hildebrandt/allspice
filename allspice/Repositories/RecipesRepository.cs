@@ -7,96 +7,97 @@ using Dapper;
 
 namespace allspice.Repositories
 {
-  public class RecipesRepository
+ public class RecipesRepository
+ {
+  private readonly IDbConnection _db;
+  public RecipesRepository(IDbConnection db)
   {
-    private readonly IDbConnection _db;
-    public RecipesRepository(IDbConnection db)
-    {
-      _db = db;
-    }
+   _db = db;
+  }
 
-    internal List<Recipe> GetAllRecipes()
-    {
-      string sql = @"
+  internal List<Recipe> GetAllRecipes()
+  {
+   string sql = @"
       SELECT r.*, a.* FROM recipes r JOIN accounts a ON a.id = r.creatorId;";
-      //                                   this  V sets the data types for the aruments, then the output data type
-      List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
-      {
-        //                                                           /\ for loop
-        recipe.Creator = profile;
-        // /\ this is creating the subobject on recipe called creator
-        return recipe;
-      }).ToList();
-      // /\ this formats the recipes into a list
-      return recipes;
-    }
+   //                                   this  V sets the data types for the aruments, then the output data type
+   List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
+   {
+    //                                                           /\ for loop
+    recipe.Creator = profile;
+    // /\ this is creating the subobject on recipe called creator
+    return recipe;
+   }).ToList();
+   // /\ this formats the recipes into a list
+   return recipes;
+  }
 
-    internal Recipe GetRecipeById(int id)
-    {
-      string sql = @"SELECT * FROM recipes r WHERE r.id = @recipeId;";
-      Recipe recipe = _db.Query<Recipe>(sql, new { id }).FirstOrDefault();
-      return recipe;
-    }
+  internal Recipe GetRecipeById(int id)
+  {
+   string sql = @"SELECT * FROM recipes r WHERE r.id = @recipeId;";
+   Recipe recipe = _db.Query<Recipe>(sql, new { id }).FirstOrDefault();
+   return recipe;
+  }
 
-    internal List<Recipe> GetFavoriteRecipesByProfileId(string profileId)
-    {
-      string sql = @"SELECT *
-FROM recipes r
-JOIN favorites f ON f.recipeId = r.id
-JOIN accounts a ON a.id = r.creatorId
-where f.accountId = @profileId;";
-List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) => {
-  recipe.Creator = profile;
-  return recipe;
-}).ToList();
-return recipes;
-    }
+  internal List<Recipe> GetFavoriteRecipesByProfileId(string profileId)
+  {
+   string sql = @"SELECT *
+        FROM recipes r
+        JOIN favorites f ON f.recipeId = r.id
+        JOIN accounts a ON a.id = r.creatorId
+        where f.accountId = @profileId;";
+   List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
+   {
+    recipe.Creator = profile;
+    return recipe;
+   }).ToList();
+   return recipes;
+  }
 
-    internal List<Recipe> GetRecipesByProfileId(string creatorId)
-    {
-      string sql = @"SELECT * FROM recipes r JOIN accounts a ON a.id = r.creatorId WHERE r.creatorId = @creatorId;";
-      List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
-      {
-        recipe.Creator = profile;
-        return recipe;
-      }).ToList();
-      return recipes;
-    }
+  internal List<Recipe> GetRecipesByProfileId(string creatorId)
+  {
+   string sql = @"SELECT * FROM recipes r JOIN accounts a ON a.id = r.creatorId WHERE r.creatorId = @creatorId;";
+   List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
+   {
+    recipe.Creator = profile;
+    return recipe;
+   }).ToList();
+   return recipes;
+  }
 
-    internal Recipe CreateRecipe(Recipe newRecipe)
-    {
-      string sql = @"
+  internal Recipe CreateRecipe(Recipe newRecipe)
+  {
+   string sql = @"
         INSERT INTO recipes (picture, title, subtitle, description, creatorId)
         VALUES (@picture, @title, @subtitle, @description, @creatorId);
         SELECT LAST_INSERT_ID();
       ";
-      // the newRecipe does not have an id yet
-      int id = _db.ExecuteScalar<int>(sql, newRecipe);
-      // get the new generated id and set the newRecipe prop equal to it
-      newRecipe.Id = id;
-      return newRecipe;
-    }
+   // the newRecipe does not have an id yet
+   int id = _db.ExecuteScalar<int>(sql, newRecipe);
+   // get the new generated id and set the newRecipe prop equal to it
+   newRecipe.Id = id;
+   return newRecipe;
+  }
 
-    internal Recipe EditRecipe(Recipe recipeData)
-    {
-      string sql = @"UPDATE recipes SET 
+  internal Recipe EditRecipe(Recipe recipeData)
+  {
+   string sql = @"UPDATE recipes SET 
       picture = @picture, 
       title = @title,
       subtitle = @subtitle,
       description = @description
       WHERE id = @id;";
-      int rowsAffected = _db.Execute(sql, recipeData);
-      if (rowsAffected == 0)
-      {
-        throw new Exception("Unable to edit recipe");
-      }
-      return recipeData;
-    }
-
-    internal void DeleteRecipe(int id)
-    {
-      string sql = @"DELETE FROM recipes WHERE id = @id;";
-      _db.Execute(sql, new { id });
-    }
+   int rowsAffected = _db.Execute(sql, recipeData);
+   if (rowsAffected == 0)
+   {
+    throw new Exception("Unable to edit recipe");
+   }
+   return recipeData;
   }
+
+  internal void DeleteRecipe(int id)
+  {
+   string sql = @"DELETE FROM recipes WHERE id = @id;";
+   _db.Execute(sql, new { id });
+  }
+ }
 }

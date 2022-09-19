@@ -24,7 +24,7 @@ namespace allspice.Repositories
 
     internal Step GetStepById(int id)
     {
-      string sql = @"SELECT * FROM steps s WHERE s.id = @id";
+      string sql = "SELECT * FROM steps s WHERE s.id = @id";
       Step step = _db.Query<Step>(sql, new {id}).FirstOrDefault();
       return step;
     }

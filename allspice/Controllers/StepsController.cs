@@ -14,13 +14,15 @@ namespace allspice.Controllers
   public class StepsController : ControllerBase
   {
     private readonly StepsService _stepsService;
+    private readonly RecipesService _recipeService;
 
-    public StepsController(StepsService stepsService)
-    {
-      _stepsService = stepsService;
-    }
+  public StepsController(StepsService stepsService, RecipesService recipeService)
+  {
+   _stepsService = stepsService;
+   _recipeService = recipeService;
+  }
 
-    [HttpGet("{id}")]
+  [HttpGet("{id}")]
     public ActionResult<Step> GetStepById(int id)
     {
       try
@@ -42,6 +44,10 @@ namespace allspice.Controllers
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        Recipe recipe = _recipeService.GetRecipeById(newStep.RecipeId);
+        if (recipe.CreatorId != userInfo.Id){
+          throw new Exception("You are not authorized to add steps to recipes you did not create.");
+        }
         newStep.CreatorId = userInfo.Id;
         Step step = _stepsService.CreateStep(newStep);
         return Ok(step);
