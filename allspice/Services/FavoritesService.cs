@@ -1,18 +1,40 @@
 using System;
 using allspice.Models;
+using allspice.Repositories;
 
 namespace allspice.Services
 {
   public class FavoritesService
   {
+    private readonly FavoritesRepository _favoritesRepository;
+
+    public FavoritesService(FavoritesRepository favoritesRepository)
+    {
+      _favoritesRepository = favoritesRepository;
+    }
+
     internal Favorite CreateFavorite(Favorite newFav)
     {
-      throw new NotImplementedException();
+      return _favoritesRepository.CreateFavorite(newFav);
     }
 
     internal object DeleteFavorite(Account userInfo, int id)
     {
-      throw new NotImplementedException();
+      Favorite favorite = GetFavoriteById(id);
+      if(favorite.AccountId != userInfo.Id){
+        throw new Exception("Unauthorized");
+      }
+      _favoritesRepository.DeleteFavorite(favorite.Id);
+      return "Removed from favorites";
+    }
+
+    internal Favorite GetFavoriteById(int id)
+    {
+      Favorite favorite = _favoritesRepository.GetFavoriteById(id);
+      if(favorite == null){
+        throw new Exception("unable to find favorite info");
+      }
+      return favorite;
     }
   }
 }
