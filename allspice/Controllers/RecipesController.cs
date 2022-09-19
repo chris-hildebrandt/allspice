@@ -103,7 +103,7 @@ namespace allspice.Controllers
         return BadRequest(e.Message);
       }
     }
-
+// get list of recipes posted by one specific profile
     [HttpGet("/profiles/{profileId}")]
     public ActionResult<List<Recipe>> GetRecipesByProfileId(string profileId)
     {
@@ -118,7 +118,7 @@ namespace allspice.Controllers
         return BadRequest(e.Message);
       }
     }
-
+// get a list of all favorited recipes by profileId
       [HttpGet("/favorites/{profileId}")]
     public ActionResult<List<Recipe>> GetFavoriteRecipesByProfileId(string profileId)
     {

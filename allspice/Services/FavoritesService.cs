@@ -1,12 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using allspice.Models;
 
 namespace allspice.Services
 {
-    public class FavoritesService
+  public class FavoritesService
+  {
+    internal Favorite CreateFavorite(Favorite newFav)
     {
-        
+      throw new NotImplementedException();
     }
+
+    internal object DeleteFavorite(Account userInfo, int id)
+    {
+      throw new NotImplementedException();
+    }
+  }
 }
