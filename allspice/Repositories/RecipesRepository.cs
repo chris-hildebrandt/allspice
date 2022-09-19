@@ -19,9 +19,9 @@ namespace allspice.Repositories
     {
       string sql = @"
       SELECT r.*, a.* FROM recipes r JOIN accounts a ON a.id = r.creatorId;";
-      List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, account) =>
+      List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
       {
-        recipe.Creator = account;
+        recipe.Creator = profile;
         return recipe;
       }).ToList();
       // /\ this formats the recipes into a list
@@ -42,8 +42,8 @@ FROM recipes r
 JOIN favorites f ON f.recipeId = r.id
 JOIN accounts a ON a.id = r.creatorId
 where f.accountId = @profileId;";
-List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, account) => {
-  recipe.Creator = account;
+List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) => {
+  recipe.Creator = profile;
   return recipe;
 }).ToList();
 return recipes;
@@ -52,9 +52,9 @@ return recipes;
     internal List<Recipe> GetRecipesByProfileId(string creatorId)
     {
       string sql = @"SELECT * FROM recipes r JOIN accounts a ON a.id = r.creatorId WHERE r.creatorId = @creatorId;";
-      List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, account) =>
+      List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
       {
-        recipe.Creator = account;
+        recipe.Creator = profile;
         return recipe;
       }).ToList();
       return recipes;

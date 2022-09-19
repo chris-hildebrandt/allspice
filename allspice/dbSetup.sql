@@ -140,3 +140,13 @@ WHERE i.recipeId = "recipeId";
 -- when doing a join the order matters, SELECT a.*, b.* then from a JOIN b ON a.id = b.creatorId;
 -- Query<A, B, A(this one determines the returned data type)>(sql, (a, b) this is a foreach that tells the loop each a is from A and each b is from B => { a.Creator = b; return a}) after this mess you need to make sue that your model has a place to store the joined information.
 -- task is used for an async function
+
+-- ON UPDATE and ON DELETE
+
+DELIMITER $$
+CREATE TRIGGER trigger_name
+BEFORE DELETE ON tableName FOR EACH ROW
+BEGIN
+ logic
+ END$$
+ DELIMITER
