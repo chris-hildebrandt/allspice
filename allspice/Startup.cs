@@ -37,8 +37,16 @@ namespace allspice
             services.AddScoped<AccountService>();
             services.AddTransient<RecipesRepository>();
             services.AddTransient<RecipeTagsRepository>();
+            services.AddTransient<FavoritesRepository>();
+            services.AddTransient<IngredientsRepository>();
+            services.AddTransient<StepsRepository>();
+            services.AddTransient<TagsRepository>();
             services.AddTransient<RecipesService>();
             services.AddTransient<RecipeTagsService>();
+            services.AddTransient<FavoritesService>();
+            services.AddTransient<IngredientsService>();
+            services.AddTransient<StepsService>();
+            services.AddTransient<TagsService>();
         }
 
         private void ConfigureCors(IServiceCollection services)

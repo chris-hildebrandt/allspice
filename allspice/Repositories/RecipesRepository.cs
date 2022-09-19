@@ -19,9 +19,12 @@ namespace allspice.Repositories
     {
       string sql = @"
       SELECT r.*, a.* FROM recipes r JOIN accounts a ON a.id = r.creatorId;";
+      //                                   this  V sets the data types for the aruments, then the output data type
       List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
       {
+        //                                                           /\ for loop
         recipe.Creator = profile;
+        // /\ this is creating the subobject on recipe called creator
         return recipe;
       }).ToList();
       // /\ this formats the recipes into a list

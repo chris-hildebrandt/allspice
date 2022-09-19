@@ -143,10 +143,17 @@ WHERE i.recipeId = "recipeId";
 
 -- ON UPDATE and ON DELETE
 
-DELIMITER $$
-CREATE TRIGGER trigger_name
-BEFORE DELETE ON tableName FOR EACH ROW
+DELIMITER //
+
+CREATE TRIGGER deleteChildren
+BEFORE DELETE
+ON recipes FOR EACH ROW
 BEGIN
- logic
- END$$
- DELIMITER
+ DELETE FROM recipeTags WHERE recipeId = OLD.id;
+ DELETE FROM favorites WHERE recipeId = OLD.id;
+ DELETE FROM ingredients WHERE recipeId = OLD.id;
+ DELETE FROM steps WHERE recipeId = OLD.id;
+ 
+END //
+
+DELIMITER;
