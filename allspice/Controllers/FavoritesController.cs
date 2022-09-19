@@ -20,6 +20,21 @@ namespace allspice.Controllers
 
     // TODO get all favorites info somehow to list recipes by popularity
 
+    [HttpGet("{id}")]
+    public ActionResult<Favorite> GetFavoriteById(int id)
+    {
+      try
+      {
+        Favorite favorite = _favoritesService.GetFavoriteById(id);
+        return Ok(favorite);
+      }
+      catch (System.Exception e)
+      {
+
+        return BadRequest(e);
+      }
+    }
+
     [HttpPost]
     [Authorize]
     // the body should send a recipe id
