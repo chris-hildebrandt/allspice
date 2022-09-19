@@ -8,17 +8,19 @@ using Dapper;
 namespace allspice.Repositories
 {
   public class RecipesRepository
+  {
+    private readonly IDbConnection _db;
+    public RecipesRepository(IDbConnection db)
     {
-        private readonly IDbConnection _db;
-        public RecipesRepository(IDbConnection db){
-            _db = db;
-        }
+      _db = db;
+    }
 
     internal List<Recipe> GetAllRecipes()
     {
       string sql = @"
       SELECT r.*, a.* FROM recipes r JOIN accounts a ON a.id = r.creatorId;";
-      List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, account) => {
+      List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, account) =>
+      {
         recipe.Creator = account;
         return recipe;
       }).ToList();
@@ -29,14 +31,29 @@ namespace allspice.Repositories
     internal Recipe GetRecipeById(int id)
     {
       string sql = @"SELECT * FROM recipes r WHERE r.id = @recipeId;";
-      Recipe recipe = _db.Query<Recipe>(sql, new {id}).FirstOrDefault();
+      Recipe recipe = _db.Query<Recipe>(sql, new { id }).FirstOrDefault();
       return recipe;
+    }
+
+    internal List<Recipe> GetFavoriteRecipesByProfileId(string profileId)
+    {
+      string sql = @"SELECT *
+FROM recipes r
+JOIN favorites f ON f.recipeId = r.id
+JOIN accounts a ON a.id = r.creatorId
+where f.accountId = @profileId;";
+List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, account) => {
+  recipe.Creator = account;
+  return recipe;
+}).ToList();
+return recipes;
     }
 
     internal List<Recipe> GetRecipesByProfileId(string creatorId)
     {
       string sql = @"SELECT * FROM recipes r JOIN accounts a ON a.id = r.creatorId WHERE r.creatorId = @creatorId;";
-      List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, account) => {
+      List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, account) =>
+      {
         recipe.Creator = account;
         return recipe;
       }).ToList();
@@ -66,7 +83,8 @@ namespace allspice.Repositories
       description = @description
       WHERE id = @id;";
       int rowsAffected = _db.Execute(sql, recipeData);
-      if (rowsAffected == 0) {
+      if (rowsAffected == 0)
+      {
         throw new Exception("Unable to edit recipe");
       }
       return recipeData;
@@ -75,7 +93,7 @@ namespace allspice.Repositories
     internal void DeleteRecipe(int id)
     {
       string sql = @"DELETE FROM recipes WHERE id = @id;";
-      _db.Execute(sql, new {id});
+      _db.Execute(sql, new { id });
     }
   }
 }

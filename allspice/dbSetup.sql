@@ -114,7 +114,7 @@ FROM recipeTags rt
 JOIN tags t ON rt.tagId
 JOIN recipes r ON rt.recipeId
 WHERE rt.tagId = t.id AND rt.recipeId = "3";
--- get count of all like for a recipeId
+-- get count of all likes for a recipeId
 SELECT 
 COUNT(accountId)
 FROM recipes r
