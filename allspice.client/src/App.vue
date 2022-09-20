@@ -29,12 +29,13 @@ export default {
 <style lang="scss">
 @import "./assets/scss/main.scss";
 .banner{
-  background-image: url(https://images.unsplash.com/photo-1607528926952-d4f83df2683c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1154&q=80);
+  background-image: url(https://d3ox4wjkl7mf3m.cloudfront.net/feed_stories/IWqh0TzkJnq1InIDdtNhZkWOWLotPdWeZK697FFu.jpeg);
   width: 100%;
-  height: 30vh;
-  background-position: bottom;
+  height: 40vh;
+  background-position: 50% -100px;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-attachment: fixed;
 }
+
 </style>

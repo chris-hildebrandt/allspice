@@ -16,13 +16,13 @@
         id="authDropdown"
       >
         <div v-if="account.picture || user.picture">
+          <span class="mx-3 text-dark lighten-30">{{ account.name || user.name }}</span>
           <img
             :src="account.picture || user.picture"
             alt="account photo"
             height="40"
             class="rounded"
           />
-          <span class="mx-3 text-success lighten-30">{{ account.name || user.name }}</span>
         </div>
       </div>
       <div
