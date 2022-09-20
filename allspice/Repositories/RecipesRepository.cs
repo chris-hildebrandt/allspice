@@ -15,25 +15,48 @@ namespace allspice.Repositories
    _db = db;
   }
 
-  internal List<Recipe> GetAllRecipes()
-  {
-   string sql = @"
-      SELECT r.*, a.* FROM recipes r JOIN accounts a ON a.id = r.creatorId;";
-   //                                   this  V sets the data types for the aruments, then the output data type
-   List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
-   {
-    //                                                           /\ for loop
-    recipe.Creator = profile;
-    // /\ this is creating the subobject on recipe called creator
-    return recipe;
+  internal List<Recipe> GetAllRecipes(){
+   string sql = "SELECT r.*, a.* FROM recipes r JOIN accounts a ON a.id = r.creatorId;";
+                                    // this  V sets the data types for the aruments, then the output data type
+   List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) => {
+                                                            // /\ for loop
+   recipe.Creator = profile;
+  //  /\ this is creating the sub-object on recipe called creator
+   return recipe;
    }).ToList();
-   // /\ this formats the recipes into a list
+  //  /\ this formats the recipes into a list
    return recipes;
   }
 
+  // internal List<Recipe> GetAllRecipes()
+  // {
+  //  string sql = "SELECT * FROM recipes";
+  //  List<Recipe> recipes = _db.Query<Recipe, Recipe>(sql, (r) =>
+  //  {
+  //   int id = r.id;
+
+  //     //  returns a count of the people who favorited the recipe
+  //   string sql2 = @"SELECT 
+  //   COUNT(accountId)
+  //   FROM recipes r
+  //   JOIN favorites f ON f.recipeId
+  //   WHERE f.recipeId = r.id AND r.id = @id;
+  //   ";
+  //   r.likes = _db.Query<Recipe>(sql2, new{id});
+  //  // returns a comma list of recipetag names.
+  //  string sql3 = @"SELECT 
+  //   GROUP_CONCAT(CONCAT('''', tags.id, '''', ',', '''', tags.name, '''')) AS activeTags FROM recipeTags
+  //   JOIN tags on recipeTags.tagId = tags.id
+  //   WHERE recipeTags.recipeId = @id;";
+  //   r.activeTags = _db.Query<Recipe>(sql3, new{id});
+  //   return r;
+  //  }).ToList();
+  //  return recipes;
+  // }
+
   internal Recipe GetRecipeById(int id)
   {
-   string sql = @"SELECT * FROM recipes r WHERE r.id = @recipeId;";
+   string sql = "SELECT * FROM recipes r WHERE r.id = @recipeId;";
    Recipe recipe = _db.Query<Recipe>(sql, new { id }).FirstOrDefault();
    return recipe;
   }
@@ -55,7 +78,7 @@ namespace allspice.Repositories
 
   internal List<Recipe> GetRecipesByProfileId(string creatorId)
   {
-   string sql = @"SELECT * FROM recipes r JOIN accounts a ON a.id = r.creatorId WHERE r.creatorId = @creatorId;";
+   string sql = "SELECT * FROM recipes r JOIN accounts a ON a.id = r.creatorId WHERE r.creatorId = @creatorId;";
    List<Recipe> recipes = _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
    {
     recipe.Creator = profile;
@@ -96,7 +119,7 @@ namespace allspice.Repositories
 
   internal void DeleteRecipe(int id)
   {
-   string sql = @"DELETE FROM recipes WHERE id = @id;";
+   string sql = "DELETE FROM recipes WHERE id = @id;";
    _db.Execute(sql, new { id });
   }
  }

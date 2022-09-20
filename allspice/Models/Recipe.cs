@@ -10,5 +10,7 @@ namespace allspice.Models
         public string CreatorId { get; set; }
         public Profile Creator { get; set; }
         public int FavoriteId { get; set; }
+        public string activeTags {get; set;}
+        public int likes {get; set;}
     }
 }

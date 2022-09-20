@@ -93,9 +93,9 @@ INSERT INTO recipes
 -- tags should be stored on the recipe with a rt id so they can be removed rt should have a r.id, an id, and 
 
 INSERT INTO recipeTags
-(tagId, recipeId)
+(tagId, recipeId, creatorId)
 VALUES
-(27,3);
+(27, 3, "62fead19fda8e818d13a81db");
 
 INSERT INTO favorites
 (recipeId, accountId)
@@ -108,12 +108,14 @@ VALUES
 ("Sandwich");
 -- 
 SELECT 
-rt.*,
-t.*
-FROM recipeTags rt
-JOIN tags t ON rt.tagId
-JOIN recipes r ON rt.recipeId
-WHERE rt.tagId = t.id AND rt.recipeId = "3";
+recipes.*,
+recipeTags.*,
+tags.name
+FROM recipes
+JOIN recipeTags ON recipes.id = recipeTags.recipeId
+JOIN tags on recipeTags.tagId = tags.id;
+-- WHERE rt.recipeId = "3";
+SELECT * FROM `recipeTags`;
 -- get count of all likes for a recipeId
 SELECT 
 COUNT(accountId)
