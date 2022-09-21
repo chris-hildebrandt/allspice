@@ -20,18 +20,27 @@ namespace allspice.Repositories
     {
       string sql = @"SELECT 
       rt.*,
-      t.*
+      t.tagName
       FROM recipeTags rt
-      JOIN tags t ON rt.tagId
-      JOIN recipes r ON rt.recipeId
-      WHERE rt.tagId = t.id AND rt.recipeId = @recipeId;";
+      JOIN tags t ON rt.tagId = t.tagId
+      WHERE rt.recipeId = @recipeId;";
       List<RecipeTag> recipeTags = _db.Query<RecipeTag>(sql, new{recipeId}).ToList();
+      return recipeTags;
+    }
+
+    internal string GetRecipeTagsConcat(int recipeId)
+    {
+      string sql = @"SELECT 
+      GROUP_CONCAT(CONCAT('''', tags.id, '''', ',', '''', tags.name, '''')) AS activeTags FROM recipeTags
+      JOIN tags on recipeTags.tagId = tags.tagId
+      WHERE recipeTags.recipeId = @id;";
+      string recipeTags = _db.Query<string>(sql, new{recipeId}).FirstOrDefault();
       return recipeTags;
     }
 
     internal RecipeTag GetRecipeTagById(int id)
     {
-      string sql = @"SELECT * FROM recipeTags rt WHERE rt.id = @id";
+      string sql = @"SELECT * FROM recipeTags rt WHERE rt.recipeTagId = @id";
       RecipeTag recipeTag = _db.Query<RecipeTag>(sql, new {id}).FirstOrDefault();
       return recipeTag;
     }
@@ -41,13 +50,13 @@ namespace allspice.Repositories
       string sql = @"INSERT INTO recipeTags
       (tagId, recipeId, creatorId) VALUES (@tagId, @recipeId, @creatorId); SELECT LAST_INSERT_ID();";
       int id = _db.ExecuteScalar<int>(sql, newRecipeTag);
-      newRecipeTag.Id = id;
+      newRecipeTag.RecipeTagId = id;
       return newRecipeTag;
     }
 
     internal void DeleteRecipeTag(int id)
     {
-      string sql = @"DELETE FROM recipeTags WHERE id = @id;";
+      string sql = @"DELETE FROM recipeTags WHERE recipeTagId = @id;";
       _db.Execute(sql, new{id});
     }
   }

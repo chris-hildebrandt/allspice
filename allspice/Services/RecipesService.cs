@@ -8,13 +8,30 @@ namespace allspice.Services
   public class RecipesService
   {
     private readonly RecipesRepository _recipesRepo;
-    public RecipesService(RecipesRepository recipesRepo)
+    private readonly IngredientsService _ingredientsService;
+    private readonly StepsService _stepsService;
+    private readonly RecipeTagsService _recipeTagsService;
+    private readonly FavoritesService _favoritesService;
+
+  public RecipesService(FavoritesService favoritesService, RecipeTagsService recipeTagsService, StepsService stepsService, IngredientsService ingredientsService, RecipesRepository recipesRepo)
+  {
+   _recipesRepo = recipesRepo;
+   _favoritesService = favoritesService;
+   _recipeTagsService = recipeTagsService;
+   _stepsService = stepsService;
+   _ingredientsService = ingredientsService;
+  }
+
+  internal List<Recipe> GetAllRecipes()
     {
-      _recipesRepo = recipesRepo;
-    }
-    internal List<Recipe> GetAllRecipes()
-    {
-      return _recipesRepo.GetAllRecipes();
+      List<Recipe> recipes = _recipesRepo.GetAllRecipes();
+      recipes.ForEach(r =>{
+        r.Ingredients = _ingredientsService.GetRecipeIngredients(r.Id);
+        r.Steps = _stepsService.GetRecipeSteps(r.Id);
+        r.Tags = _recipeTagsService.GetRecipeTags(r.Id);
+        r.Likes = _favoritesService.GetFavoriteCount(r.Id);
+      });
+      return recipes;
     }
     internal Recipe GetRecipeById(int id)
     {

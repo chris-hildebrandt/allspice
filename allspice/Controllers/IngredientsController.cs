@@ -58,7 +58,7 @@ namespace allspice.Controllers
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-        updatedIngredient.Id = id;
+        updatedIngredient.IngredientId = id;
         if (updatedIngredient.CreatorId != userInfo.Id)
         {
           throw new Exception("You are not authorized to edit this ingredient");

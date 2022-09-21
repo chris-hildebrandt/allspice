@@ -36,7 +36,7 @@ namespace allspice.Services
 
     internal Ingredient EditIngredient(Ingredient updatedIngredient)
     {
-      Ingredient original = GetIngredientById(updatedIngredient.Id);
+      Ingredient original = GetIngredientById(updatedIngredient.IngredientId);
       original.Name = updatedIngredient.Name ?? original.Name;
       original.Quantity = updatedIngredient.Quantity ?? original.Quantity;
       return _ingredientsRepo.EditIngredient(original);
@@ -48,7 +48,7 @@ namespace allspice.Services
       if (ingredient.CreatorId != userInfo.Id) {
         throw new Exception("You are not authorized to delete this ingredient");
       }
-      _ingredientsRepo.DeleteIngredient(ingredient.Id);
+      _ingredientsRepo.DeleteIngredient(ingredient.IngredientId);
       return $"{ingredient.Name} has been deleted";
     }
   }

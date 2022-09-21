@@ -65,7 +65,7 @@ namespace allspice.Controllers
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-        updatedStep.Id = id;
+        updatedStep.StepId = id;
         if (updatedStep.CreatorId != userInfo.Id)
         {
           throw new Exception("You are not authorized to edit this step");

@@ -27,7 +27,7 @@ namespace allspice.Repositories
     internal Ingredient GetIngredientById(int id)
     {
       // TODO does this select need to include a filter for the recipeId as well? will there be duplicate i.id's?
-      string sql = @"SELECT * FROM ingredients i WHERE i.id = @id";
+      string sql = @"SELECT * FROM ingredients i WHERE i.ingredientId = @id";
       Ingredient ingredient = _db.Query<Ingredient>(sql, new {id}).FirstOrDefault();
       return ingredient;
     }
@@ -42,7 +42,7 @@ namespace allspice.Repositories
       SELECT LAST_INSERT_ID();
       ";
       int id = _db.ExecuteScalar<int>(sql, newIngredient);
-      newIngredient.Id = id;
+      newIngredient.IngredientId = id;
       return newIngredient;
     }
 
@@ -60,7 +60,7 @@ namespace allspice.Repositories
 
     internal void DeleteIngredient(int id)
     {
-      string sql = @"DELETE FROM ingredients WHERE id = @id";
+      string sql = @"DELETE FROM ingredients WHERE ingredientId = @id";
       _db.Execute(sql, new {id});
     }
 

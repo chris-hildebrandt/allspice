@@ -68,7 +68,7 @@ namespace allspice.Controllers
       catch (System.Exception e)
       {
 
-        return BadRequest(e);
+        return BadRequest(e.Message);
       }
     }
 

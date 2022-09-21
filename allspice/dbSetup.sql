@@ -116,13 +116,15 @@ JOIN recipeTags ON recipes.id = recipeTags.recipeId
 JOIN tags on recipeTags.tagId = tags.id;
 -- WHERE rt.recipeId = "3";
 SELECT * FROM `recipeTags`;
--- get count of all likes for a recipeId
+
 SELECT 
 COUNT(accountId)
 FROM recipes r
 JOIN favorites f ON f.recipeId
 WHERE f.recipeId = r.id AND r.id = "3";
-
+-- ^ get count of all likes for a recipeId
+SELECT r.picture, r.title, r.subtitle, r.description, r.creatorId, r.likes, r.id AS recipeId, a.* FROM recipes r JOIN accounts a ON a.id = r.creatorId;
+-- ^ GetAllRecipes
 SELECT *
 FROM recipes r
 JOIN accounts a ON a.id = r.creatorId
@@ -131,6 +133,8 @@ WHERE r.creatorId = "creatorId";
 SELECT *
 FROM ingredients i
 WHERE i.recipeId = "recipeId";
+
+SELECT rt.*, t.name FROM recipeTags rt JOIN tags t ON rt.tagId = t.id WHERE rt.recipeId = "3";
 
 -- create Tables
 -- create a link or tie between two tables that need to be used together with a foreign KEY
@@ -159,3 +163,12 @@ BEGIN
 END //
 
 DELIMITER;
+
+SELECT 
+      rt.*,
+      t.name
+      FROM recipeTags rt
+      JOIN tags t ON rt.tagId = t.tagId
+      WHERE rt.recipeId = "3";
+
+      ALTER TABLE tags RENAME COLUMN name TO tagName;

@@ -24,7 +24,7 @@ namespace allspice.Repositories
 
     internal Step GetStepById(int id)
     {
-      string sql = "SELECT * FROM steps s WHERE s.id = @id";
+      string sql = "SELECT * FROM steps s WHERE s.stepId = @id";
       Step step = _db.Query<Step>(sql, new {id}).FirstOrDefault();
       return step;
     }
@@ -37,7 +37,7 @@ namespace allspice.Repositories
       (@position, @body, @recipeId, @creatorId);
       SELECT LAST_INSERT_ID();";
       int id = _db.ExecuteScalar<int>(sql, newStep);
-      newStep.Id = id;
+      newStep.StepId = id;
       return newStep;
     }
 
@@ -55,7 +55,7 @@ namespace allspice.Repositories
 
     internal void DeleteStep(int id)
     {
-      string sql = @"DELETE FROM steps WHERE id = @id";
+      string sql = @"DELETE FROM steps WHERE stepId = @id";
       _db.Execute(sql, new{id});
     }
   }

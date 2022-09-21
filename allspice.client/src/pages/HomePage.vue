@@ -1,8 +1,12 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-
+  <RecipeForm/>
+  <div v-if="recipes.length" class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
+    <div class="row p-3" v-for="r in recipes" :key="r.id">
+      <RecipeCard :recipe="r"/>
+      <!--           ^ name of prop passed down in the component-->
+    </div>
   </div>
-  <button id="create-recipe-btn" class="btn mdi mdi-plus-outline mdi-36px text-dark lighten-30"></button>
+  <button id="create-recipe-btn" data-bs-target="#recipe-form" data-bs-toggle="modal" class="btn mdi mdi-plus-outline mdi-36px text-dark lighten-30" @click=""></button>
 </template>
 
 
@@ -13,31 +17,33 @@ import { logger } from "../utils/Logger.js";
 import Pop from "../utils/Pop.js";
 import { onMounted } from "vue";
 import { computed } from "@vue/reactivity";
+import RecipeCard from "../components/RecipeCard.vue";
+import RecipeForm from "../components/RecipeForm.vue";
 
 
 export default {
-  name: 'Home',
-
+  name: "Home",
   setup() {
     // const filterTerm = ref('')
-
+    onMounted(() => {
+      getAllRecipes();
+    });
     async function getAllRecipes() {
       try {
         await recipesService.getAllRecipes();
-      } catch (error) {
-        logger.error('[getting recipes]', error);
+      }
+      catch (error) {
+        logger.error("[getting recipes]", error);
         Pop.error(error);
       }
     }
-
-    onMounted(()=>{
-      getAllRecipes();
-    });
     return {
       // filterTerm,
-      // recipes: computed(()=> AppState.recipes.filter(r=> filterTerm.value ? r.tag == filterTerm.value : true )),
-    }
-  }
+      recipes: computed(() => AppState.recipes)
+      // .filter(r=> filterTerm.value ? r.tag == filterTerm.value : true )),
+    };
+  },
+  components: { RecipeCard, RecipeForm }
 }
 </script>
 

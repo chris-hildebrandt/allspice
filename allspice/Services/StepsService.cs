@@ -36,7 +36,7 @@ namespace allspice.Services
 
     internal Step EditStep(Step updatedStep)
     {
-      Step original = GetStepById(updatedStep.Id);
+      Step original = GetStepById(updatedStep.StepId);
       original.Position = updatedStep.Position ?? original.Position;
       original.Body = updatedStep.Body ?? original.Body;
       return _stepsRepo.EditStep(original);
@@ -48,7 +48,7 @@ namespace allspice.Services
       if(step.CreatorId != userInfo.Id) {
         throw new Exception("You do not have permission to delete this step");
       }
-      _stepsRepo.DeleteStep(step.Id);
+      _stepsRepo.DeleteStep(step.StepId);
       return $"Step #{step.Position} has been deleted";
     }
   }

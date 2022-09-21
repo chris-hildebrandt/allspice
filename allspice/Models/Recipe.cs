@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace allspice.Models
 {
   public class Recipe
@@ -10,7 +12,9 @@ namespace allspice.Models
         public string CreatorId { get; set; }
         public Profile Creator { get; set; }
         public int FavoriteId { get; set; }
-        public string activeTags {get; set;}
-        public int likes {get; set;}
+        public int Likes {get; set;}
+        public List<Ingredient> Ingredients { get; set; }
+        public List<Step> Steps { get; set; }
+        public List<RecipeTag> Tags { get; set; }
     }
 }

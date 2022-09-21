@@ -39,7 +39,7 @@ namespace allspice.Services
       if (recipeTag.CreatorId != userInfo.Id){
         throw new Exception("You are not authorized to delete this recipeTag");
       }
-      _recipeTagsRepo.DeleteRecipeTag(recipeTag.Id);
+      _recipeTagsRepo.DeleteRecipeTag(recipeTag.RecipeTagId);
       return "Tag removed from recipe";
     }
   }

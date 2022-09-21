@@ -13,6 +13,10 @@ namespace allspice.Services
       _favoritesRepository = favoritesRepository;
     }
 
+    internal int GetFavoriteCount(int id){
+      return _favoritesRepository.GetFavoriteCount(id);
+    }
+
     internal Favorite CreateFavorite(Favorite newFav)
     {
       return _favoritesRepository.CreateFavorite(newFav);
@@ -24,7 +28,7 @@ namespace allspice.Services
       if(favorite.AccountId != userInfo.Id){
         throw new Exception("Unauthorized");
       }
-      _favoritesRepository.DeleteFavorite(favorite.Id);
+      _favoritesRepository.DeleteFavorite(favorite.FavoriteId);
       return "Removed from favorites";
     }
 

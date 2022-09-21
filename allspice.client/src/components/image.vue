@@ -4,7 +4,8 @@
 <img src="https://www.tastingtable.com/img/gallery/40-types-of-soup-and-what-makes-them-unique/pho-1661261800.webp" alt="Soups-up Logo" class="">
 <img src="https://thekitchencommunity.org/wp-content/uploads/2021/11/shutterstock_1074279785.jpg" alt="Soups-up Logo" class="">
 </template>
-
+ <!-- actionable items, buttons need a title="" inputs need a for="" name="" and id=""-->
+  <!-- if a value is required by your server make it required on the frontend in the form. this is form validation -->
 <script>
 export default {
 setup(){
