@@ -6,7 +6,29 @@
       <!--           ^ name of prop passed down in the component-->
     </div>
   </div>
-  <button id="create-recipe-btn" data-bs-target="#recipe-form" data-bs-toggle="modal" class="btn mdi mdi-plus-outline mdi-36px text-dark lighten-30" @click=""></button>
+  <button type="button" class="btn mdi mdi-plus-outline mdi-36px text-dark lighten-30" data-bs-toggle="modal" data-bs-target="#create-recipe" id="create-recipe-btn"></button>
+
+  <Modal>
+    <div class="modal fade" id="create-recipe" tabindex="-1" aria-labelledby="create-recipeLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="create-recipeLabel">What is the name of your soup recipe?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="text">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <!-- router push to details page is simpler than a double modal loop -->
+            <button  data-bs-target="#recipe-form" data-bs-toggle="modal" class="btn" >Create Recipe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Modal>
+
 </template>
 
 
@@ -39,7 +61,7 @@ export default {
     }
     return {
       // filterTerm,
-      recipes: computed(() => AppState.recipes)
+      recipes: computed(() => AppState.recipes),
       // .filter(r=> filterTerm.value ? r.tag == filterTerm.value : true )),
     };
   },

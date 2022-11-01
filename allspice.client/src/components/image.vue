@@ -6,6 +6,7 @@
 </template>
  <!-- actionable items, buttons need a title="" inputs need a for="" name="" and id=""-->
   <!-- if a value is required by your server make it required on the frontend in the form. this is form validation -->
+  table foreign keys prevent parents from being deleted because the table is a dependent child, you can get around this by adding on delete cascade which deletes the child.
 <script>
 export default {
 setup(){
