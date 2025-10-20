@@ -27,6 +27,6 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-vue": "9.4.0",
     "sass": "1.54.5",
-    "vite": "^7.1.5"
+    "vite": "^7.1.11"
   }
 }
